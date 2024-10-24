@@ -60,7 +60,7 @@ nav ul li a:hover {
 
 /* Hero Section */
 #hero {
-    background: url('background-image.jpg') no-repeat center center/cover;
+    background-color: #36454F;
     color: white;
     height: 500px;
     display: flex;
