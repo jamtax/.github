@@ -167,7 +167,7 @@ nav ul li a:hover {
 }
 
 .about-content p {
-    margin-top: 3%;
+    margin-top: 4%;
     font-size: 18px;
     line-height: 1.6;
     flex: 1; /* Takes up remaining space */
