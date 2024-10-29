@@ -12,10 +12,12 @@
 <body>
     <header>
         <div class="container">
-            <h1>JAM TAX ACCOUNTING</h1>
+            <h1 class="main-heading">JAM TAX ACCOUNTING</h1>
             <h2>Your Tax & Accounting Partner</h2>
+    
             <nav>
-                <ul>
+                <div class="menu-icon" onclick="toggleMenu()">☰</div>
+                <ul id="nav-links">
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#testimonials">Testimonials</a></li>
@@ -24,10 +26,12 @@
             </nav>
         </div>
     </header>
+    
+    
 
     <section id="hero">
         <div class="hero-content">
-            <h2>Managing Your Finances, One Step at a Time</h2>
+            <h2 >Managing Your Finances, One Step at a Time</h2>
             <p>Professional tax and accounting services for individuals and businesses. We ensure compliance and accuracy, so you can focus on growth.</p>
             <a href="#contact" class="cta-button">Contact Us</a>
         </div>
@@ -35,7 +39,7 @@
 
     <section id="about">
         <div class="container">
-            <h2>About Us</h2>
+            <h2 class="section-titles">About Us</h2>
             <div class="about-content">
                 <img src="images\jam tax account.jpg" alt="Jam tax account Office Image">
                 <p>At JAM TAX ACCOUNTING, we provide personalized tax and accounting services. Our firm is led by <strong>Joleane Marais</strong>, an experienced professional who is dedicated to helping clients with their financial needs.</p>
@@ -46,7 +50,7 @@
 
     <section id="services">
         <div class="container">
-            <h2>Our Services</h2>
+            <h2 class="section-titles">Our Services</h2>
             <div class="services-grid">
                 <div class="service-item">
                     <h3>Tax Planning & Filing</h3>
@@ -70,7 +74,7 @@
 
     <section id="testimonials">
         <div class="container">
-            <h2>What Our Clients Say</h2>
+            <h2 class="section-titles">What Our Clients Say</h2>
             <div class="testimonials-grid">
                 <div class="testimonial-item">
                     <p>"JAM TAX ACCOUNTING helped me manage my business finances with ease. Their professionalism and expertise are unmatched."</p>
@@ -86,7 +90,7 @@
 
     <section id="contact">
         <div class="container">
-            <h2>Contact Us</h2>
+            <h2 class="section-titles">Contact Us</h2>
             <p>Get in touch with us for more information or to schedule a consultation:</p>
             <div class="contact-info">
                 <div class="contact-item">
@@ -104,6 +108,13 @@
             </div>
         </div>
     </section>
+
+    <script>
+        function toggleMenu() {
+    document.getElementById("nav-links").classList.toggle("show-menu");
+}
+
+    </script>
 
     <footer>
         <div class="container">

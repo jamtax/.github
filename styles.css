@@ -12,6 +12,11 @@ body {
     color: #333;
 }
 
+.section-titles{
+    text-align: center;
+    margin-bottom: 2%;
+}
+
 /* Container */
 .container {
     width: 90%;
@@ -37,6 +42,10 @@ header h2 {
     font-weight: 300;
 }
 
+nav {
+    position: relative;
+}
+
 nav ul {
     list-style: none;
     display: flex;
@@ -58,11 +67,49 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
+/* Responsive Navbar */
+.menu-icon {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    position: absolute;
+    bottom: 1px;
+}
+
+/* Show menu icon and hide links on smaller screens */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        display: none; /* Hidden by default */
+        position: absolute;
+        top: 100%; /* Positions the menu just below the menu icon */
+        left: 0;
+        width: 100%;
+        background: #333;
+        padding: 10px 0;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+}
+
+/* Display the navigation when menu-icon is clicked */
+.show-menu {
+    display: flex !important;
+}
+
+
 /* Hero Section */
 #hero {
     background-color: #36454F;
     color: white;
-    height: 500px;
+    padding: 10%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,6 +141,14 @@ nav ul li a:hover {
     background-color: #d62839;
 }
 
+@media (max-width: 480px) {
+    header h1 {
+        margin-bottom: 10px;
+        font-size: 26px;
+        font-weight: 600;
+    }
+}
+
 /* About Section */
 #about {
     padding: 50px 0;
@@ -103,17 +158,66 @@ nav ul li a:hover {
 .about-content {
     display: flex;
     gap: 30px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
 }
 
 .about-content img {
-    width: 50%;
+    width: 35%;
     border-radius: 10px;
 }
 
 .about-content p {
+    margin-top: 3%;
     font-size: 18px;
     line-height: 1.6;
+    flex: 1; /* Takes up remaining space */
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: center;
+    }
+
+    .about-content img {
+        width: 75%; /* Adjust image width */
+        margin-bottom: 20px; /* Add some space below the image */
+    }
+
+    .about-content p {
+        text-align: center; /* Center-align text on small screens */
+        text-align: justify;
+    }
+}
+
+@media (max-width: 900px) {
+    .about-content {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: center;
+    }
+
+    .about-content img {
+        width: 75%; /* Adjust image width */
+        margin-bottom: 20px; /* Add some space below the image */
+    }
+
+    .about-content p {
+        text-align: center; /* Center-align text on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .about-content img {
+        width: 100%; /* Full width on very small screens */
+    }
+
+    .about-content p {
+        font-size: 16px; /* Slightly smaller font for readability */
+        text-align: justify;
+    }
+}
+
 
 /* Services Section */
 #services {
@@ -139,6 +243,29 @@ nav ul li a:hover {
     margin-bottom: 15px;
     font-size: 22px;
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr; /* Stack items in one column on tablet screens */
+        gap: 20px;
+    }
+
+    .service-item {
+        padding: 20px; /* Reduce padding for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .service-item h3 {
+        font-size: 20px; /* Slightly smaller font size for smaller screens */
+    }
+
+    .service-item p {
+        font-size: 16px; /* Adjust text size for readability on very small screens */
+    }
+}
+
 
 /* Testimonials Section */
 #testimonials {
@@ -172,6 +299,7 @@ nav ul li a:hover {
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
+    gap: 20px; /* Adds spacing between contact items */
 }
 
 .contact-item h3 {
@@ -185,6 +313,34 @@ nav ul li a:hover {
 
 .contact-item p a:hover {
     text-decoration: none;
+}
+
+/* Responsive Contact Section */
+@media (max-width: 768px) {
+    .contact-info {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center;
+        gap: 30px; /* Increase gap between items on smaller screens */
+    }
+
+    .contact-item {
+        text-align: center; /* Center-align text */
+        width: 100%; /* Full width for better alignment */
+    }
+}
+
+@media (max-width: 480px) {
+    #contact {
+        padding: 30px 0; /* Reduce padding on very small screens */
+    }
+
+    .contact-item h3 {
+        font-size: 18px; /* Adjust font size for readability */
+    }
+
+    .contact-item p {
+        font-size: 16px; /* Smaller font for readability */
+    }
 }
 
 /* Footer */
