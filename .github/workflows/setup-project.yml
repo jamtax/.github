@@ -1,388 +1,173 @@
-name: Setup Project Environment
+name: Build and Test
 
 on:
-  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
   push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/**'
-      - 'package.json'
-      - 'next.config.js'
+    branches: [ main ]
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: write
-  issues: write
 
 jobs:
-  setup:
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 15
+
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm audit fix || true
+
+      - name: Cache Next.js build
+        uses: actions/cache@v3
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build project
+        run: npm run build
+        env:
+          CI: true
+
+      - name: Check for build errors
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const number = context.payload.pull_request?.number;
+            if (number) {
+              github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: number,
+                body: '❌ Build failed. Please check the logs for more details.'
+              });
+            }
+
+      - name: Upload build artifacts
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: .next
+          retention-days: 7
+
+  analyze:
+    name: Analyze Bundle
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Create base directories
-        run: |
-          mkdir -p \
-            src/app \
-            src/components/ui \
-            src/lib \
-            public
-
-      - name: Setup components directory
-        run: |
-          mkdir -p src/components/ui
-          
-          # Create Card component
-          cat > src/components/ui/card.tsx << 'EOL'
-          import * as React from "react"
-          import { cn } from "@/lib/utils"
-
-          const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-            ({ className, ...props }, ref) => (
-              <div ref={ref} className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)} {...props} />
-            )
-          )
-          Card.displayName = "Card"
-
-          const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-            ({ className, ...props }, ref) => (
-              <div ref={ref} className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />
-            )
-          )
-          CardHeader.displayName = "CardHeader"
-
-          const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
-            ({ className, ...props }, ref) => (
-              <h3 ref={ref} className={cn("text-2xl font-semibold leading-none tracking-tight", className)} {...props} />
-            )
-          )
-          CardTitle.displayName = "CardTitle"
-
-          const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-            ({ className, ...props }, ref) => (
-              <p ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />
-            )
-          )
-          CardDescription.displayName = "CardDescription"
-
-          const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-            ({ className, ...props }, ref) => (
-              <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
-            )
-          )
-          CardContent.displayName = "CardContent"
-
-          const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-            ({ className, ...props }, ref) => (
-              <div ref={ref} className={cn("flex items-center p-6 pt-0", className)} {...props} />
-            )
-          )
-          CardFooter.displayName = "CardFooter"
-
-          export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
-          EOL
-
-      - name: Setup utilities
-        run: |
-          # Create utils file
-          cat > src/lib/utils.ts << 'EOL'
-          import { type ClassValue, clsx } from "clsx"
-          import { twMerge } from "tailwind-merge"
-
-          export function cn(...inputs: ClassValue[]) {
-            return twMerge(clsx(inputs))
-          }
-          EOL
-
-      - name: Setup app files
-        run: |
-          # Create layout.tsx
-          cat > src/app/layout.tsx << 'EOL'
-          import './globals.css'
-          import type { Metadata } from 'next'
-
-          export const metadata: Metadata = {
-            title: 'Jamtax - Powered by Intuit QuickBooks',
-            description: 'Transform your financial management with Jamtax and Intuit QuickBooks',
-          }
-
-          export default function RootLayout({
-            children,
-          }: {
-            children: React.ReactNode
-          }) {
-            return (
-              <html lang="en">
-                <body>{children}</body>
-              </html>
-            )
-          }
-          EOL
-
-          # Create globals.css
-          cat > src/app/globals.css << 'EOL'
-          @tailwind base;
-          @tailwind components;
-          @tailwind utilities;
-          EOL
-
-          # Create showcase page
-          cat > src/app/page.tsx << 'EOL'
-          import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-          import { AlertCircle, CheckCircle2, ArrowRight, Phone, Mail } from 'lucide-react';
-
-          export default function JamtaxShowcase() {
-            const features = [
-              { title: "Smart Bookkeeping", description: "Track income, expenses, and profits in real-time with automated, error-free bookkeeping" },
-              { title: "Effortless Payroll", description: "Integrated payroll solutions ensure timely payments with precise tax calculations" },
-              { title: "Tax Preparation", description: "Expert tax filing combined with smart tax tracking to eliminate surprises" },
-              { title: "Custom Reports", description: "Generate tailored financial reports from cash flow to profit & loss statements" }
-            ];
-
-            return (
-              <div className="min-h-screen bg-gradient-to-b from-white to-gray-100">
-                <div className="container mx-auto px-4 py-16">
-                  <div className="text-center mb-16">
-                    <h1 className="text-4xl font-bold mb-4">Transform Your Financial Management</h1>
-                    <p className="text-xl text-gray-600 mb-8">Partner with Jamtax and Intuit QuickBooks for seamless business success</p>
-                    <div className="flex justify-center gap-4">
-                      <button className="bg-green-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-green-700">
-                        Get Started <ArrowRight size={20} />
-                      </button>
-                      <button className="border border-green-600 text-green-600 px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-green-50">
-                        Contact Sales
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {features.map((feature, index) => (
-                      <Card key={index} className="hover:shadow-lg transition-shadow">
-                        <CardHeader>
-                          <CardTitle className="flex items-center gap-2">
-                            <CheckCircle2 className="text-green-600" />
-                            {feature.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-gray-600">{feature.description}</p>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          }
-          EOL
-
-      - name: Initialize package.json
-        run: |
-          cat > package.json << 'EOL'
-          {
-            "name": "jamtax-showcase",
-            "version": "0.1.0",
-            "private": true,
-            "scripts": {
-              "dev": "next dev",
-              "build": "next build",
-              "start": "next start",
-              "lint": "next lint"
-            },
-            "dependencies": {
-              "next": "14.1.0",
-              "react": "^18.2.0",
-              "react-dom": "^18.2.0",
-              "lucide-react": "^0.263.1",
-              "class-variance-authority": "^0.7.0",
-              "clsx": "^2.0.0",
-              "tailwind-merge": "^2.0.0"
-            },
-            "devDependencies": {
-              "@types/node": "^20.11.0",
-              "@types/react": "^18.2.0",
-              "@types/react-dom": "^18.2.0",
-              "autoprefixer": "^10.4.16",
-              "postcss": "^8.4.32",
-              "tailwindcss": "^3.4.0",
-              "typescript": "^5.3.3"
-            }
-          }
-          EOL
-
-      - name: Setup configuration files
-        run: |
-          # Create next.config.js
-          cat > next.config.js << 'EOL'
-          /** @type {import('next').NextConfig} */
-          const nextConfig = {
-            reactStrictMode: true,
-          }
-          module.exports = nextConfig
-          EOL
-
-          # Create postcss.config.js
-          cat > postcss.config.js << 'EOL'
-          module.exports = {
-            plugins: {
-              tailwindcss: {},
-              autoprefixer: {},
-            },
-          }
-          EOL
-
-          # Create tailwind.config.js
-          cat > tailwind.config.js << 'EOL'
-          /** @type {import('tailwindcss').Config} */
-          module.exports = {
-            content: [
-              './src/**/*.{js,ts,jsx,tsx,mdx}',
-            ],
-            theme: {
-              extend: {},
-            },
-            plugins: [],
-          }
-          EOL
-
-          # Create tsconfig.json
-          cat > tsconfig.json << 'EOL'
-          {
-            "compilerOptions": {
-              "target": "es5",
-              "lib": ["dom", "dom.iterable", "esnext"],
-              "allowJs": true,
-              "skipLibCheck": true,
-              "strict": true,
-              "forceConsistentCasingInFileNames": true,
-              "noEmit": true,
-              "esModuleInterop": true,
-              "module": "esnext",
-              "moduleResolution": "node",
-              "resolveJsonModule": true,
-              "isolatedModules": true,
-              "jsx": "preserve",
-              "incremental": true,
-              "plugins": [
-                {
-                  "name": "next"
-                }
-              ],
-              "paths": {
-                "@/*": ["./src/*"]
-              }
-            },
-            "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-            "exclude": ["node_modules"]
-          }
-          EOL
-
-      - name: Create .gitignore
-        run: |
-          cat > .gitignore << 'EOL'
-          # dependencies
-          /node_modules
-          /.pnp
-          .pnp.js
-
-          # testing
-          /coverage
-
-          # next.js
-          /.next/
-          /out/
-
-          # production
-          /build
-
-          # misc
-          .DS_Store
-          *.pem
-
-          # debug
-          npm-debug.log*
-          yarn-debug.log*
-          yarn-error.log*
-
-          # local env files
-          .env*.local
-
-          # vercel
-          .vercel
-
-          # typescript
-          *.tsbuildinfo
-          next-env.d.ts
-          EOL
+          name: build-output
+          path: .next
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm ci
 
-      - name: Create README.md
-        run: |
-          cat > README.md << 'EOL'
-          # Jamtax Showcase
+      - name: Analyze bundle size
+        run: npx next bundle-analyzer
 
-          This is a Next.js project showcasing Jamtax's integration with Intuit QuickBooks and related services.
-
-          ## Getting Started
-
-          First, run the development server:
-
-          ```bash
-          npm run dev
-          ```
-
-          Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-          ## Technologies Used
-
-          - Next.js 14
-          - React 18
-          - TypeScript
-          - Tailwind CSS
-          - Lucide Icons
-          - shadcn/ui components
-
-          ## Learn More
-
-          To learn more about the technologies used in this project:
-
-          - [Next.js Documentation](https://nextjs.org/docs)
-          - [React Documentation](https://reactjs.org/)
-          - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-          - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-          EOL
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+      - name: Comment PR with bundle analysis
+        if: ${{ success() }}
+        uses: actions/github-script@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: Initialize project structure and dependencies"
-          title: "Setup Project Environment"
-          body: |
-            This PR sets up the project environment with:
+          script: |
+            const { owner, repo } = context.repo;
+            const number = context.payload.pull_request?.number;
+            if (number) {
+              github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: number,
+                body: '📊 Bundle analysis completed. Check the artifacts for details.'
+              });
+            }
 
-            - Next.js 14 configuration
-            - TypeScript setup
-            - Tailwind CSS integration
-            - Basic component structure
-            - Development dependencies
-            - Project documentation
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run security scan
+        uses: snyk/actions/node@v1
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Upload security results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-results
+          path: snyk-results.json
+          retention-days: 7
+
+  notify:
+    name: Notify on Failure
+    needs: [build, analyze, security]
+    runs-on: ubuntu-latest
+    if: failure()
+
+    steps:
+      - name: Send notification
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.sha;
+            const workflow_url = `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`;
             
-            Please review the changes and merge if everything looks correct.
-          branch: setup-project
-          delete-branch: true
-          labels: |
-            setup
-            automation
+            let message = `⚠️ Workflow failed for commit ${sha}\n`;
+            message += `See details: ${workflow_url}`;
+            
+            if (context.eventName === 'pull_request') {
+              github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: context.payload.pull_request?.number,
+                body: message
+              });
+            }
