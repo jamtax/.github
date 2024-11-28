@@ -1,0 +1,170 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm audit fix || true
+
+      - name: Cache Next.js build
+        uses: actions/cache@v3
+        with:
+          path: |
+            .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint code
+        run: npm run lint
+        continue-on-error: false
+
+      - name: Build project
+        run: npm run build
+        env:
+          CI: true
+
+      - name: Check for build errors
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            if (context.eventName === 'pull_request') {
+              github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: number,
+                body: '❌ Build failed. Please check the logs for more details.'
+              });
+            }
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: .next
+          retention-days: 7
+
+  analyze:
+    name: Analyze Bundle
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: .next
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Analyze bundle size
+        run: npx next bundle-analyzer
+
+      - name: Comment PR with bundle analysis
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: number,
+              body: '📊 Bundle analysis completed. Check the artifacts for details.'
+            });
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run security scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Upload security results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-results
+          path: snyk-results.json
+          retention-days: 7
+
+  notify:
+    name: Notify on Failure
+    needs: [build, analyze, security]
+    runs-on: ubuntu-latest
+    if: failure()
+
+    steps:
+      - name: Send notification
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo, sha } = context;
+            const workflow_url = `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`;
+            
+            let message = `⚠️ Workflow failed for commit ${sha}\n`;
+            message += `See details: ${workflow_url}`;
+            
+            if (context.eventName === 'pull_request') {
+              github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: context.issue.number,
+                body: message
+              });
+            }
