@@ -137,37 +137,6 @@ nav ul li a:hover {
     line-height: 1.6;
 }
 
-.partner-section {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
-    padding: 2rem;
-    border-radius: 10px;
-}
-
-.partner-logos {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2.5rem;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.partner-logo {
-    height: auto;
-    width: 130px;
-    object-fit: contain;
-    transition: all 0.3s ease;
-    filter: brightness(0) invert(1) opacity(0.7);
-}
-
-.partner-logo:hover {
-    transform: scale(1.05);
-    filter: brightness(1) invert(0) opacity(1);
-}
-
 .cta-button {
     display: inline-block;
     background-color: #e63946;
@@ -180,6 +149,52 @@ nav ul li a:hover {
 
 .cta-button:hover {
     background-color: #d62839;
+}
+
+/* Partner Section */
+.partner-section {
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto 0;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+}
+
+.partner-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    align-items: center;
+    justify-items: center;
+}
+
+.partner-tile {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.75rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1.5;
+}
+
+.partner-logo {
+    width: 100%;
+    height: 100%;
+    max-width: 80px;
+    max-height: 40px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+    filter: brightness(0) invert(1) opacity(0.7);
+}
+
+.partner-tile:hover .partner-logo {
+    transform: scale(1.1);
+    filter: brightness(1) invert(0) opacity(1);
 }
 
 /* About Section */
@@ -224,6 +239,12 @@ nav ul li a:hover {
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .service-item h3 {
@@ -250,6 +271,11 @@ nav ul li a:hover {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-item:hover {
+    transform: scale(1.02);
 }
 
 /* Contact Section */
@@ -318,16 +344,18 @@ footer {
         font-size: 1.1rem;
     }
 
-    .partner-section {
-        padding: 1.5rem;
+    .partner-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
     }
-
-    .partner-logos {
-        gap: 2rem;
+    
+    .partner-tile {
+        padding: 0.5rem;
     }
-
+    
     .partner-logo {
-        width: 100px;
+        max-width: 60px;
+        max-height: 30px;
     }
 
     .services-grid {
@@ -355,7 +383,6 @@ footer {
     }
 }
 
-/* Continuing the media queries for max-width: 480px */
 @media (max-width: 480px) {
     header h1 {
         font-size: 24px;
@@ -365,16 +392,23 @@ footer {
         font-size: 1.75rem;
     }
 
+    .partner-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
     .partner-section {
         padding: 1rem;
+        margin-top: 1.5rem;
     }
-
-    .partner-logos {
-        gap: 1.5rem;
+    
+    .partner-tile {
+        padding: 0.4rem;
     }
-
+    
     .partner-logo {
-        width: 80px;
+        max-width: 50px;
+        max-height: 25px;
     }
 
     .about-content img {
@@ -426,24 +460,6 @@ footer {
         font-size: 24px;
         margin-bottom: 1.5rem;
     }
-}
-
-/* Additional hover effects and transitions */
-.service-item {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.service-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.testimonial-item {
-    transition: transform 0.3s ease;
-}
-
-.testimonial-item:hover {
-    transform: scale(1.02);
 }
 
 /* Accessibility improvements */
@@ -499,7 +515,7 @@ button:focus {
         page-break-inside: avoid;
     }
 
-    .partner-logos {
+    .partner-section {
         display: none;
     }
 
@@ -519,11 +535,15 @@ button:focus {
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
+    .partner-tile {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
     .partner-logo {
         filter: brightness(0) invert(1) opacity(0.7);
     }
     
-    .partner-logo:hover {
-        filter: brightness(0) invert(1) opacity(1);
+    .partner-tile:hover .partner-logo {
+        filter: brightness(1) invert(0) opacity(1);
     }
 }
