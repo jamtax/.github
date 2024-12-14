@@ -381,30 +381,6 @@ footer {
         width: 100%;
     }
 }
-@media (max-width: 768px) {
-    .partner-grid {
-        gap: 1rem;
-        padding: 0 0.5rem;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
-    }
-
-    .partner-grid::-webkit-scrollbar {
-        display: none; /* Chrome, Safari and Opera */
-    }
-    
-    .partner-tile {
-        min-width: 100px;
-        height: 50px;
-        flex-shrink: 0;
-    }
-    
-    .partner-logo {
-        max-height: 30px;
-    }
-}
 
 @media (max-width: 480px) {
     .partner-section {
@@ -421,6 +397,7 @@ footer {
         max-height: 25px;
     }
 }
+
 @media (max-width: 480px) {
     header h1 {
         font-size: 24px;
@@ -508,7 +485,7 @@ footer {
     }
 }
 
-/* Improve focus visibility */
+/* Focus visibility improvements */
 a:focus,
 button:focus {
     outline: 2px solid #e63946;
@@ -585,6 +562,8 @@ button:focus {
         filter: brightness(1) invert(0) opacity(1);
     }
 }
+
+/* WhatsApp Button Styles */
 .whatsapp-nav {
     margin-left: 15px;
 }
@@ -613,14 +592,14 @@ button:focus {
     pointer-events: none;
 }
 
-/* Security-focused styles */
+/* Focus visibility on WhatsApp link */
 .whatsapp-link:focus {
     outline: 2px solid #fff;
     outline-offset: 2px;
     box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.5);
 }
 
-/* Prevent text selection */
+/* Prevent text selection on WhatsApp */
 .whatsapp-link span {
     user-select: none;
     -webkit-user-select: none;
