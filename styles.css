@@ -585,3 +585,56 @@ button:focus {
         filter: brightness(1) invert(0) opacity(1);
     }
 }
+.whatsapp-nav {
+    margin-left: 15px;
+}
+
+.whatsapp-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background-color: #25D366;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.whatsapp-link:hover {
+    background-color: #20ba57;
+    text-decoration: none !important;
+}
+
+.whatsapp-icon {
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+/* Security-focused styles */
+.whatsapp-link:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.5);
+}
+
+/* Prevent text selection */
+.whatsapp-link span {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+@media (max-width: 768px) {
+    .whatsapp-nav {
+        margin: 10px 0;
+    }
+
+    .whatsapp-link {
+        justify-content: center;
+        width: 100%;
+    }
+}
