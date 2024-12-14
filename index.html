@@ -25,8 +25,10 @@
                     <li><a href="#testimonials">Testimonials</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li class="whatsapp-nav">
-                        <a href="#" 
+                        <a href="https://wa.me/27797656234" 
                            id="whatsapp-link" 
+                           class="whatsapp-link" 
+                           target="_blank" 
                            rel="noopener noreferrer" 
                            aria-label="Chat with us on WhatsApp">
                             <svg xmlns="http://www.w3.org/2000/svg" 
@@ -34,8 +36,9 @@
                                  height="20" 
                                  viewBox="0 0 24 24" 
                                  fill="currentColor" 
-                                 class="whatsapp-icon">
-                                <path d="..." />
+                                 class="whatsapp-icon" 
+                                 aria-hidden="true">
+                                <path d="..."></path>
                             </svg>
                             <span>WhatsApp</span>
                         </a>
@@ -55,16 +58,24 @@
             <div class="partner-section">
                 <div class="partner-grid">
                     <div class="partner-tile">
-                        <img src="https://raw.githubusercontent.com/jamtax/.github/3eade4089eb1b18c64c4204da0663525b72cabf0/images/Intuit_QuickBooks_logo.svg" alt="QuickBooks Logo" class="partner-logo" loading="lazy">
+                        <a href="https://jamtax.co.za/intuit/" target="_blank" rel="noopener noreferrer">
+                            <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/Intuit_QuickBooks_logo.svg" alt="QuickBooks Logo" class="partner-logo" loading="lazy">
+                        </a>
                     </div>
                     <div class="partner-tile">
-                        <img src="https://raw.githubusercontent.com/jamtax/.github/a0931d9609fc349d84779d1ea98022ccacf31aea/images/Sage-logo_svg.svg" alt="Sage Logo" class="partner-logo" loading="lazy">
+                        <a href="https://jamtax.co.za/sage/" target="_blank" rel="noopener noreferrer">
+                            <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/Sage-logo_svg.svg" alt="Sage Logo" class="partner-logo" loading="lazy">
+                        </a>
                     </div>
                     <div class="partner-tile">
-                        <img src="https://raw.githubusercontent.com/jamtax/.github/a0931d9609fc349d84779d1ea98022ccacf31aea/images/Sage-logo_svg.svg" alt="ZOHO Logo" class="partner-logo" loading="lazy">
+                        <a href="https://jamtax.co.za/zoho/" target="_blank" rel="noopener noreferrer">
+                            <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/ZOHO_logo_2023.svg" alt="ZOHO Logo" class="partner-logo" loading="lazy">
+                        </a>
                     </div>
                     <div class="partner-tile">
-                        <img src="https://raw.githubusercontent.com/jamtax/.github/a0931d9609fc349d84779d1ea98022ccacf31aea/images/xero-logo.svg" alt="Xero Logo" class="partner-logo" loading="lazy">
+                        <a href="https://jamtax.co.za/xero/" target="_blank" rel="noopener noreferrer">
+                            <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/xero-logo.svg" alt="Xero Logo" class="partner-logo" loading="lazy">
+                        </a>
                     </div>
                 </div>
             </div>
@@ -150,28 +161,20 @@
     </footer>
 
     <script>
-        (function() {
-            'use strict';
-            const whatsappLink = document.getElementById('whatsapp-link');
-            if (!whatsappLink) return;
-
-            const phone = '27797656234'; // Your phone number
-
-            function isValidPhoneNumber(phone) {
-                const phoneRegex = /^27\d{9}$/;
-                return phoneRegex.test(phone);
-            }
-
-            whatsappLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (isValidPhoneNumber(phone)) {
-                    const url = `https://wa.me/${phone}`;
-                    window.open(url, '_blank', 'noopener,noreferrer');
-                } else {
-                    alert('Invalid phone number.');
-                }
-            });
-        })();
+    (function() {
+        'use strict';
+        const whatsappLink = document.getElementById('whatsapp-link');
+        if (!whatsappLink) return;
+    
+        const phone = '27797656234'; // Your phone number
+        const isValidPhoneNumber = /^27\d{9}$/;
+    
+        if (isValidPhoneNumber.test(phone)) {
+            whatsappLink.href = `https://wa.me/${phone}`;
+        } else {
+            console.error('Invalid phone number format');
+        }
+    })();
     </script>
 </body>
 </html>
