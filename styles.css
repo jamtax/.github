@@ -154,7 +154,7 @@ nav ul li a:hover {
 /* Partner Section */
 .partner-section {
     width: 100%;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 2rem auto 0;
     padding: 1.5rem;
     background: rgba(255, 255, 255, 0.1);
@@ -163,29 +163,28 @@ nav ul li a:hover {
 }
 
 .partner-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-items: center;
+    gap: 1.5rem;
+    padding: 0 1rem;
 }
 
 .partner-tile {
+    flex: 0 1 auto;
     background: rgba(255, 255, 255, 0.05);
     padding: 0.75rem;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1.5;
+    min-width: 120px;
+    height: 60px;
 }
 
 .partner-logo {
-    width: 100%;
+    width: auto;
     height: 100%;
-    max-width: 80px;
     max-height: 40px;
     object-fit: contain;
     transition: all 0.3s ease;
@@ -382,7 +381,46 @@ footer {
         width: 100%;
     }
 }
+@media (max-width: 768px) {
+    .partner-grid {
+        gap: 1rem;
+        padding: 0 0.5rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
 
+    .partner-grid::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
+    }
+    
+    .partner-tile {
+        min-width: 100px;
+        height: 50px;
+        flex-shrink: 0;
+    }
+    
+    .partner-logo {
+        max-height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .partner-section {
+        padding: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .partner-tile {
+        min-width: 80px;
+        height: 40px;
+    }
+    
+    .partner-logo {
+        max-height: 25px;
+    }
+}
 @media (max-width: 480px) {
     header h1 {
         font-size: 24px;
