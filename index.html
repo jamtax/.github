@@ -6,7 +6,6 @@
     <title>JAM TAX ACCOUNTING</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="/images/jamtax fav.jpg">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -14,7 +13,6 @@
         <div class="container">
             <h1 class="main-heading">JAM TAX ACCOUNTING</h1>
             <h2>Your Tax & Accounting Partner</h2>
-    
             <nav>
                 <div class="menu-icon" onclick="toggleMenu()">☰</div>
                 <ul id="nav-links">
@@ -26,21 +24,23 @@
             </nav>
         </div>
     </header>
-    
-    
 
     <section id="hero">
-        <div class="hero-content">
-            <h2 >Managing Your Finances, One Step at a Time</h2>
-            <p>Professional tax and accounting services for individuals and businesses. We ensure compliance and accuracy, so you can focus on growth.</p>
-            <a href="#contact" class="cta-button">Contact Us</a>
-        </div>
-        <div class="partner-logos">
-            <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/Intuit_QuickBooks_logo.svg" alt="QuickBooks Logo" class="partner-logo">
-            <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/Sage-logo_svg.svg" alt="Sage Logo" class="partner-logo">
-            <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/ZOHO_logo_2023.svg" alt="ZOHO Logo" class="partner-logo">
-            <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/xero-logo.svg" alt="Xero Logo" class="partner-logo">
-            <img src="https://raw.githubusercontent.com/jamtax/.github/d0ae0675995fda7f931fb841113e166ed14587eb/images/logo_white%20pin%20stripe.svg" alt="JAM TAX Logo" class="partner-logo">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h2>Managing Your Finances, One Step at a Time</h2>
+                <p>Professional tax and accounting services for individuals and businesses. We ensure compliance and accuracy, so you can focus on growth.</p>
+                <a href="#contact" class="cta-button">Contact Us</a>
+            </div>
+            <div class="partner-section">
+                <div class="partner-logos">
+                    <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/Intuit_QuickBooks_logo.svg" alt="QuickBooks Logo" class="partner-logo">
+                    <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/Sage-logo_svg.svg" alt="Sage Logo" class="partner-logo">
+                    <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/ZOHO_logo_2023.svg" alt="ZOHO Logo" class="partner-logo">
+                    <img src="https://raw.githubusercontent.com/jamtax/.github/389cf18d828898c21f8359c230d74c6458a89253/images/xero-logo.svg" alt="Xero Logo" class="partner-logo">
+                    <img src="https://raw.githubusercontent.com/jamtax/.github/d0ae0675995fda7f931fb841113e166ed14587eb/images/logo_white%20pin%20stripe.svg" alt="JAM TAX Logo" class="partner-logo">
+                </div>
+            </div>
         </div>
     </section>
 
@@ -48,7 +48,7 @@
         <div class="container">
             <h2 class="section-titles">About Us</h2>
             <div class="about-content">
-                <img src="images\jam tax account.jpg" alt="Jam tax account Office Image">
+                <img src="images/jam tax account.jpg" alt="Jam tax account Office Image">
                 <p>At JAM TAX ACCOUNTING, we provide personalized tax and accounting services. Our firm is led by <strong>Joleane Marais</strong>, an experienced professional who is dedicated to helping clients with their financial needs.</p>
                 <p>Whether you need help with tax planning, financial statements, or bookkeeping, we're here to ensure you're on the right track.</p>
             </div>
@@ -116,17 +116,16 @@
         </div>
     </section>
 
-    <script>
-        function toggleMenu() {
-    document.getElementById("nav-links").classList.toggle("show-menu");
-}
-
-    </script>
-
     <footer>
         <div class="container">
             <p>&copy; 2024 JAM TAX ACCOUNTING. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("nav-links").classList.toggle("show-menu");
+        }
+    </script>
 </body>
 </html>
