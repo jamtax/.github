@@ -1,5 +1,4 @@
 # 🧾 JAM TAX ACCOUNTING
-
 ![GitHub followers](https://img.shields.io/github/followers/jamtax?style=social)
 ![GitHub stars](https://img.shields.io/github/stars/jamtax?style=social)
 ![GitHub last commit](https://img.shields.io/github/last-commit/jamtax/jamtax.github.io)
@@ -9,17 +8,17 @@ Welcome to **JAM TAX ACCOUNTING**'s official GitHub organization. We provide com
 ---
 
 ## 📚 Repositories
-
 | Repository Name | Description | Last Update | Starred |
 |-----------------|-------------|-------------|---------|
-| [Tax Tools](https://github.com/jamtax/tax-tools) | A collection of tools to assist with tax calculations and filings | ![GitHub last commit](https://img.shields.io/github/last-commit/jamtax/tax-tools) | ![GitHub stars](https://img.shields.io/github/stars/jamtax/tax-tools?style=social) |
-| [Payroll Calculator](https://github.com/jamtax/payroll-calculator) | A simple, accurate payroll calculator | ![GitHub last commit](https://img.shields.io/github/last-commit/jamtax/payroll-calculator) | ![GitHub stars](https://img.shields.io/github/stars/jamtax/payroll-calculator?style=social) |
-| [Financial Reporting](https://github.com/jamtax/financial-reporting) | Tools for generating financial statements and reports | ![GitHub last commit](https://img.shields.io/github/last-commit/jamtax/financial-reporting) | ![GitHub stars](https://img.shields.io/github/stars/jamtax/financial-reporting?style=social) |
+| [Tax Tools](https://github.com/jamtax/tax-tools) | A collection of tools to assist with tax calculations and filings | Updated 19 hours ago | ![GitHub stars](https://img.shields.io/github/stars/jamtax/tax-tools?style=social) |
+| [Payroll Calculator](https://github.com/jamtax/payroll-calculator) | A simple, accurate payroll calculator | Updated 19 hours ago | ![GitHub stars](https://img.shields.io/github/stars/jamtax/payroll-calculator?style=social) |
+| [Financial Reporting](https://github.com/jamtax/financial-reporting) | Tools for generating financial statements and reports | Updated 19 hours ago | ![GitHub stars](https://img.shields.io/github/stars/jamtax/financial-reporting?style=social) |
+| [FileFlip](https://github.com/jamtax/FileFlip) | PDF to CSV/XLSX/worksheet format converter/exporter for jamtax.co.za | Updated 2 days ago | ![GitHub stars](https://img.shields.io/github/stars/jamtax/FileFlip?style=social) |
+| [EasyPO](https://github.com/jamtax/EasyPO) | Purchase Order Form for Public use | Updated last month | ![GitHub stars](https://img.shields.io/github/stars/jamtax/EasyPO?style=social) |
 
 ---
 
 ## 🚀 Our Services
-
 At **JAM TAX ACCOUNTING**, we offer a wide range of accounting and financial services to help businesses and individuals manage their finances efficiently:
 
 | Service                  | Description                                                                       |
@@ -34,21 +33,20 @@ At **JAM TAX ACCOUNTING**, we offer a wide range of accounting and financial ser
 ---
 
 ## 🛠️ Tools We Use
-
-Here’s a list of tools we frequently use in our projects:
-
+Here's a list of tools we frequently use in our projects:
 - ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)
 - ![Visual Studio Code](https://img.shields.io/badge/Visual_Studio_Code-0078d7.svg?logo=visual-studio-code&logoColor=white)
 - ![Docker](https://img.shields.io/badge/Docker-2CA5E0?logo=docker&logoColor=white)
 - ![Slack](https://img.shields.io/badge/Slack-4A154B?logo=slack&logoColor=white)
 - ![Zoho](https://img.shields.io/badge/Zoho_CRM-ffffff?logo=zoho&logoColor=red)
+- ![Sage](https://img.shields.io/badge/Sage-00D639?logo=sage&logoColor=white)
+- ![Xero](https://img.shields.io/badge/Xero-13B5EA?logo=xero&logoColor=white)
+- ![Salesforce](https://img.shields.io/badge/Salesforce-00A1E0?logo=salesforce&logoColor=white)
 
 ---
 
 ## 📞 Contact Us
-
 You can reach **JAM TAX ACCOUNTING** using the following contact details:
-
 - 📧 **Email**: [joleane@jamtax.co.za](mailto:joleane@jamtax.co.za)
 - 📱 **Phone**: 0797656234
 - 📍 **Address**: 70 Pet Street, Ermelo, 2351
@@ -58,7 +56,6 @@ Stay connected with us for accounting solutions tailored to your business!
 ---
 
 ## 🔗 Connect with Us
-
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin&logoColor=white)](https://www.linkedin.com/company/jamtax) 
 [![Twitter](https://img.shields.io/twitter/follow/jamtax?style=social)](https://twitter.com/jamtax)
 
