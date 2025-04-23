@@ -61,4 +61,4 @@ Stay connected with us for accounting solutions tailored to your business!
 
 ---
 
-© 2024 JAM TAX ACCOUNTING | All Rights Reserved
+© 2024 JAMTAX ACCOUNTING | All Rights Reserved
