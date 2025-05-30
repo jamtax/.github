@@ -5,7 +5,6 @@
 
 Welcome to **JAM TAX ACCOUNTING**'s official GitHub organization. We provide comprehensive accounting, tax, and business consulting services to individuals and businesses. Our repository holds useful resources and tools to help streamline financial tasks, improve efficiency, and maintain compliance.
 
----
 
 ## 📚 Repositories
 | Repository Name | Description | Last Update | Starred |
